@@ -75,7 +75,7 @@
                 <td th:text="${actual.apellido}"></td>
                 <td th:text="${actual.telefono}"></td>
 
-                <form  th:action="@{/ver/} + ${actual.matricula}" th:method="get">
+                <form  th:action="@{/estudiante/ver/} + ${actual.matricula}" th:method="get">
                     <td> <input type="submit" value="Ver" class="btn btn-primary"/><td>
                 </form>
 

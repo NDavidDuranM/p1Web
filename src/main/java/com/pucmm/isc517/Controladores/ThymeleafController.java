@@ -12,18 +12,20 @@ public class ThymeleafController {
 
     private final EstudianteService estudianteService = new EstudianteService();
 
-    @GetMapping(path ="/")
+    @GetMapping
     public String getListaEstudiantes(Model model){
         model.addAttribute("listaEstudiante",estudianteService.getListaEstudiantes());
         model.addAttribute("titulo","Listar estudiante");
-        return "/ListarEstudiante";
+        return "ListarEstudiante";
     }
 
 
     @GetMapping(path ="/nuevo")
     public String getNuevoEstudiante(Model model){
         model.addAttribute("titulo","Crear estudiante");
-        return "/Estudiante";
+        model.addAttribute("action","New");
+        model.addAttribute("estudiante",new Estudiante());
+        return "Estudiante";
     }
 
 
@@ -34,15 +36,17 @@ public class ThymeleafController {
                                  @RequestParam("apellido") String apellido,
                                  @RequestParam("telefono") String telefono)
     {
-        if(!estudianteService.crearEstudiante(nombre,apellido,telefono,matricula))
+        Boolean accion = estudianteService.crearEstudiante(nombre,apellido,telefono,matricula);
+        if(!accion)
         {
-            //Estudiante act= new Estudiante(matricula,nombre,apellido,telefono);
-            return "Error matricula en uso";
+            model.addAttribute("titulo","Error");
+            model.addAttribute("mensaje","Error matricula en uso");
+            return "Error";
         }
 
         model.addAttribute("listaEstudiante",estudianteService.getListaEstudiantes());
-        model.addAttribute("action","New");
-        return "/ListarEstudiante";
+        model.addAttribute("titulo","Listar estudiante");
+        return "ListarEstudiante";
     }
 
 
@@ -51,14 +55,19 @@ public class ThymeleafController {
                                 @RequestParam("nombre") String nombre,
                                 @RequestParam("apellido") String apellido,
                                 @RequestParam("telefono") String telefono) {
-        if (!estudianteService.updateEstudiante(nombre,apellido,telefono,matricula)) {
-            return "Error 404, Estudiante no encontrado";
+
+        Boolean accion = estudianteService.updateEstudiante(nombre,apellido,telefono,matricula);
+        if(!accion) {
+
+            model.addAttribute("titulo","Error");
+            model.addAttribute("mensaje","Error 404, estudiante no encontrado");
+            return "Error";
+
         }
 
         model.addAttribute("listaEstudiante",estudianteService.getListaEstudiantes());
         model.addAttribute("titulo","Listar estudiante");
-
-        return "/ListarEstudiante";
+        return "ListarEstudiante";
     }
 
 
@@ -66,14 +75,18 @@ public class ThymeleafController {
     public String deleteEstudiante(Model model,
                                    @PathVariable int matricula)
     {
-        if(!estudianteService.borrarEstudiante(matricula))
+        Boolean accion =estudianteService.borrarEstudiante(matricula);
+        if(!accion)
         {
-            return "Error 404, Estudiante no encontrado";
+            model.addAttribute("titulo","Error");
+            model.addAttribute("mensaje","Error 404, Estudiante no encontrado");
+            return "Error";
+
         }
 
         model.addAttribute("listaEstudiante",estudianteService.getListaEstudiantes());
         model.addAttribute("titulo","Listar estudiante");
-        return "/ListarEstudiante";
+        return "ListarEstudiante";
     }
 
 
@@ -82,12 +95,14 @@ public class ThymeleafController {
         Estudiante act = estudianteService.buscarEstudiante(matricula);
         if(act==null)
         {
-            return "Error 404, Estudiante no encontrado";
+            model.addAttribute("titulo","Error");
+            model.addAttribute("mensaje","Error 404, Estudiante no encontrado");
+            return "Error";
         }
-        model.addAttribute("titulo","Ver estudiante: "+matricula);
+        model.addAttribute("titulo","Editar estudiante: "+matricula);
         model.addAttribute("estudiante",act);
         model.addAttribute("action","Edit");
-        return "/Estudiante";
+        return "Estudiante";
     }
 
 }
