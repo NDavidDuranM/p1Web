@@ -33,7 +33,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto text-center" >
             <li class="nav-item active">
-                <a href="/estudiante" class="nav-link">Listar estudiantes</a>
+                <a href="/estudiante/" class="nav-link">Listar estudiantes</a>
             </li>
         </ul>
     </div>
@@ -75,7 +75,7 @@
                 <td th:text="${actual.apellido}"></td>
                 <td th:text="${actual.telefono}"></td>
 
-                <form  th:action="@{/ver/estudiante/} + ${actual.matricula}" th:method="get">
+                <form  th:action="@{/ver/} + ${actual.matricula}" th:method="get">
                     <td> <input type="submit" value="Ver" class="btn btn-primary"/><td>
                 </form>
 

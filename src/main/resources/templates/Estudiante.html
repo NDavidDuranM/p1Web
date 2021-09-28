@@ -33,7 +33,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto text-center" >
             <li class="nav-item active">
-                <a href="/estudiante" class="nav-link">Listar estudiantes</a>
+                <a href="/estudiante/" class="nav-link">Listar estudiantes</a>
             </li>
         </ul>
     </div>
@@ -49,7 +49,6 @@
         <div class="card-header " th:text="${titulo}" ><h4>Crear-Editar Producto</h4></div>
         <div class="card-body">
             <div>
-
 
                 <form th:action="${action} == 'New' ? @{/nuevo/save} : @{/update/}+${producto.id}" th:method="post">
                     <label class="form-label">Matricula: </label>
@@ -69,14 +68,16 @@
                     <br><br>
                 </form>
 
-                <div th:if="${${action} == 'New'">
-                <form th:action="@{/delete/} + ${estudiante.matricula}" th:method="post">
-                    <button type="submit" class="btn btn-danger">Eliminar Estudiante</button>
-                </form>
+                <div th:if="${action} == 'New'">
+                    <form th:action="@{/delete/} + ${estudiante.matricula}" th:method="post">
+                        <button type="submit" class="btn btn-danger">Eliminar Estudiante</button>
+                    </form>
                 </div>
-                <form action="/estudiante" method="get">
+
+                <form action="/estudiante/" method="get">
                     <button type="submit" class="btn btn-danger">Cancelar</button>
                 </form>
+
             </div>
         </div>
     </div>
